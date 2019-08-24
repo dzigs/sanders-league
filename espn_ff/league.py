@@ -85,13 +85,78 @@ class League(object):
         df = pandas.DataFrame(data=d)
         return df
 
+    def owner_head_to_head(self, owner_id1, owner_id2, game_types=['regular_season', 'playoffs']):
+        owner1 = self.owners[owner_id1]
+        owner2 = self.owners[owner_id2]
+
+        games_list = []
+        for year, team_id in owner1.teams.items():
+            schedule_list = self.teams[year][team_id].schedule
+            games_list += [(year, gid) for gid in schedule_list]
+
+        games_list2 = []
+        for year, team_id in owner2.teams.items():
+            schedule_list = self.teams[year][team_id].schedule
+            games_list2 += [(year, gid) for gid in schedule_list]
+
+        set1 = set(games_list)
+        set2 = set(games_list2)
+
+        h2h_games = sorted(list(set1.intersection(set2)))
+
+        owner1_wins, owner2_wins = 0, 0
+        d = {
+            'game_type': [],
+            'year': [],
+            'week': [],
+            'winning owner': [],
+            'winning points': [],
+            'losing owner': [],
+            'losing points': [],
+        }
+        for year, gid in h2h_games:
+            game = self.games[year][gid]
+            d['game_type'].append(game.game_type)
+            d['year'].append(year)
+            d['week'].append(game.week)
+            winning_id = game.home_team_id if game.winner == 'HOME' else game.away_team_id
+            d['winning points'].append(game.home_points if game.winner == 'HOME' else game.away_points)
+            d['losing points'].append(game.away_points if game.winner == 'HOME' else game.home_points)
+
+            if winning_id == owner1.teams[year]:
+                d['winning owner'].append('%s %s' % (owner1.first_name, owner1.last_name))
+                d['losing owner'].append('%s %s' % (owner2.first_name, owner2.last_name))
+                if game.game_type in game_types:
+                    owner1_wins += 1
+            else:
+                d['losing owner'].append('%s %s' % (owner1.first_name, owner1.last_name))
+                d['winning owner'].append('%s %s' % (owner2.first_name, owner2.last_name))
+                if game.game_type in game_types:
+                    owner2_wins += 1
+
+        print('%s %s: %i' % (owner1.first_name, owner1.last_name, owner1_wins))
+        print('%s %s: %i' % (owner2.first_name, owner2.last_name, owner2_wins))
+
+        df = pandas.DataFrame(data=d)
+        return df
+
+
+    def view_owner_names_and_id(self):
+        for owner_id, owner in self.owners.items():
+            print('%s | %s %s' % (owner_id, owner.first_name, owner.last_name))
+
 
 def main():
-    l = League(2009, 2018)
-    df = l.owner_records()
+    league = League(2009, 2018)
+    df = league.owner_records()
 
     with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
         print(df)
+
+    df2 = league.owner_head_to_head('{011D1B5B-E50A-47ED-805E-77BE3D70F756}', '{308ACAC2-AEAD-46F1-8B62-6473A6D14F5D}')
+
+    with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(df2)
 
 
 if __name__ == "__main__":
