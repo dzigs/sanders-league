@@ -1,0 +1,3 @@
+venv
+localconfig.conf
+espn_ff/request_history/*.json

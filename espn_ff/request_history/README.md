@@ -1,0 +1,1 @@
+Directory to hold already made espn api requests - read raw files rather than re-requesting over and over
