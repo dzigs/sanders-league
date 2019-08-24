@@ -1,10 +1,11 @@
 from espn_ff.constants import GAME_TYPE_MAP
 
+
 class Game(object):
     def __init__(self, game, season):
         self.season_id = season
         self.game_id = game['id']
-        self.week = game['matchupPeriodId'] #probably need to change for multiweeks in the future
+        self.week = game['matchupPeriodId']  # probably need to change for multiweeks in the future
         self.playoff_type = game['playoffTierType'] if 'away' in game else 'BYE_WEEK'
         self.winner = game['winner']
         self.away_team_id = game['away']['teamId'] if 'away' in game else None
