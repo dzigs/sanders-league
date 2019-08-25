@@ -7,6 +7,8 @@ class Team(object):
         self.owner_id = team['primaryOwner']
         self.location = team['location']
         self.nickname = team['nickname']
+        self.playoff_seed = team['playoffSeed']
+        self.season_finish = team['rankCalculatedFinal']
 
         # list of game_ids
         self.schedule = []
