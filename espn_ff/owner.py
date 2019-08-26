@@ -10,3 +10,13 @@ class Owner(object):
 
         # will be dict year: team_id
         self.teams = {}
+
+    def to_dict(self):
+        return {
+            'id': self.owner_id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'display_name': self.display_name,
+            'league_creator': self.league_creator,
+            'active': self.active
+        }

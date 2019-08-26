@@ -52,3 +52,15 @@ class Team(object):
                 self.losses[game.game_type] += 1
 
         self.schedule.append(game.game_id)
+
+    def to_dict(self):
+        return {
+            'year': self.season_id,
+            'id': self.team_id,
+            'owner_id': self.owner_id,
+            'abbrev': self.abbrev,
+            'location': self.location,
+            'nickname': self.nickname,
+            'playoff_seed': self.playoff_seed,
+            'season_rank': self.season_finish,
+        }

@@ -27,3 +27,16 @@ class Game(object):
             self.game_type = 'junk'
 
         self.game_type = 'ladder'
+
+    def to_dict(self):
+        return {
+            'year': self.season_id,
+            'id': self.game_id,
+            'away_team_id': self.away_team_id,
+            'home_team_id': self.home_team_id,
+            'away_points': self.away_points,
+            'home_points': self.home_points,
+            'game_type': self.game_type,
+            'week': self.week,
+            'winner': self.winner
+        }

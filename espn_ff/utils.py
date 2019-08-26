@@ -5,7 +5,7 @@ from pathlib import Path
 from espn_ff.constants import  REQUEST_HISTORY_DIR
 
 
-def league_history_json(year):
+def league_history_json(year): # TODO , force_api=False
     try:
         with open(project_root() + REQUEST_HISTORY_DIR + 'league_history_sched_%s.json' % year, mode='r') as json_file:
             contents = json_file.read()
